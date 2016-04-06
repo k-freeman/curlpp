@@ -55,12 +55,12 @@ int main(int argc, char *argv[])
     request.setOpt(new curlpp::options::Verbose(true)); 
     
     std::list<std::string> header; 
-    header.push_back("Content-Type: application/octet-stream"); 
+    header.push_back("Content-Type: application/x-www-form-urlencoded"); 
     
     request.setOpt(new curlpp::options::HttpHeader(header)); 
     
-    request.setOpt(new curlpp::options::PostFields("abcd"));
-    request.setOpt(new curlpp::options::PostFieldSize(5));
+    request.setOpt(new curlpp::options::PostFields(argv[2]));
+    request.setOpt(new curlpp::options::PostFieldSize(strlen(argv[2])));
     
     request.perform(); 
   }
