@@ -145,14 +145,11 @@ int main(void) //int argc, char *argv[], not needed
     curlpp::Easy request;
 
     request.setOpt(new curlpp::options::Url(url)); 
-    //request.setOpt(new curlpp::options::Verbose(true)); 
     
     std::list<std::string> header; 
     header.push_back("Content-Type: application/x-www-form-urlencoded"); 
     
     request.setOpt(new curlpp::options::HttpHeader(header)); 
-    
-
     
     w = (uint8_t *)malloc(Nb*(Nr+1)*4);
 
@@ -160,22 +157,9 @@ int main(void) //int argc, char *argv[], not needed
 
     cipher(in /* in */, out /* out */, w /* expanded key */);
 
-    //printf("out:\n");
-
     for (i = 0; i < 4; i++) {
-    //printf("%02x%02x%02x%02x", out[4*i+0], out[4*i+1], out[4*i+2], out[4*i+3]);
-    sprintf(buf,"%s%02x%02x%02x%02x", buf, out[4*i+0], out[4*i+1], out[4*i+2], out[4*i+3]);
+      sprintf(buf,"%s%02x%02x%02x%02x", buf, out[4*i+0], out[4*i+1], out[4*i+2], out[4*i+3]);
     }
-
-    //printf("\n");
-
-
-
-
-
-
-
-
 
 
     std::ostringstream os;
@@ -193,10 +177,8 @@ int main(void) //int argc, char *argv[], not needed
     char* begin = strstr(cnt,"Outcome");
     if (begin)
     {
-      //printf("%s",&begin[19]);
       char* enc=(char*)malloc(32);
       strncpy(enc,&begin[19],32);
-      //printf("%s\n",enc);
       for (int i=0;i<16;i++)
       {
         unsigned int u;
@@ -206,11 +188,9 @@ int main(void) //int argc, char *argv[], not needed
       }
 
       inv_cipher(out, in, w);
-      //char* cmd = (char*)calloc(sizeof(char),33);
-      //strncpy(cmd,(char*)in,32);
       printf("cmd: %s\n",in);
 
-  }
+    }
   }
   catch ( curlpp::LogicError & e ) {
     std::cout << e.what() << std::endl;
@@ -219,22 +199,8 @@ int main(void) //int argc, char *argv[], not needed
     std::cout << e.what() << std::endl;
   }
 
-
-/*
-    inv_cipher(out, in, w);
-
-    printf("msg:\n");
-    for (i = 0; i < 4; i++) {
-    printf("%02x%02x%02x%02x", in[4*i+0], in[4*i+1], in[4*i+2], in[4*i+3]);
-    }
-
-    printf("\n");
-    printf("%s = buf\n",buf);*/
   return EXIT_SUCCESS;
 }
-
-
-
 
 // AES
 /*
